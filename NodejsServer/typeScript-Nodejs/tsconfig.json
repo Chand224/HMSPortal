@@ -1,0 +1,25 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "outDir": "./dist",
+        "sourceMap": true,
+        "inlineSources": true,
+        "isolatedModules": true
+    },
+    "include": [
+        "src/**/*.ts",
+        "test/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
+
+    // in compilerOptions we tell TypeScript that we’ll be targeting ES2015 and that 
+    // we’d like a CommonJS style module as output (the same module style that Node uses)
+    // the include section tells the compiler to look for .ts files in the “src” directory
+    // the exclude section tells the compiler to ignore anything in “node_modules”
+// outDir property to the compilerOptions of tsconfig.json to tell TypeScript 
+// to place all of our transpiled JavaScript into a different directory rather than compiling the files right next to their source .ts files:

@@ -1,19 +1,80 @@
-const express=require('express');
-var app=express();
-const http=require('http');
-const path=require('path');
-var server=http.createServer();
-app.use(express.static(__dirname+'/../FrontEnd/HMS-UI/dist'))
+#!/usr/bin/env node
+"use strict";
 
-const port =process.env.PORT ||5221;
-// app.get('/', function (req, res,next) {
-//     res.sendFile(path.join(__dirname + '/../FrontEnd/HMS-UI/dist'));
-//     next();
-// });
-app.get('/',function (req,res,next) {
-    res.redirect('/');
-// res.render('index');    
-})
-app.listen(port,()=>{
-    console.log(`port listening to ${port}`);
-})
+//module dependencies
+// var server = require("../FrontEnd/HMS-UI/dist/server");
+var debug = require("debug")("express:server");
+var http = require("http");
+
+//create http server
+var httpPort = normalizePort(process.env.PORT || 8080);
+// var app = server.Server.bootstrap().app;
+// app.set("port", httpPort);
+var httpServer = http.createServer(app);
+
+//listen on provided ports
+httpServer.listen(httpPort);
+
+//add error handler
+httpServer.on("error", onError);
+
+//start listening on port
+httpServer.on("listening", onListening);
+
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+function normalizePort(val) {
+    var port = parseInt(val, 10);
+
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
+
+    if (port >= 0) {
+        // port number
+        return port;
+    }
+
+    return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+function onError(error) {
+    if (error.syscall !== "listen") {
+        throw error;
+    }
+
+    var bind = typeof port === "string"
+        ? "Pipe " + port
+        : "Port " + port;
+
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+        case "EACCES":
+            console.error(bind + " requires elevated privileges");
+            process.exit(1);
+            break;
+        case "EADDRINUSE":
+            console.error(bind + " is already in use");
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+function onListening() {
+    var addr = httpServer.address();
+    var bind = typeof addr === "string"
+        ? "pipe " + addr
+        : "port " + addr.port;
+    debug("Listening on " + bind);
+}
